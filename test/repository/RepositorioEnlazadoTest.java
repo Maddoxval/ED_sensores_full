@@ -75,4 +75,49 @@ public class RepositorioEnlazadoTest {
         assertEquals(7, lista.tamano());
         assertEquals(7, lista.contarRecorriendo());
     }
+    @Test
+    public void testEliminarEnListaVaciaDevuelveFalse() {
+        RepositorioEnlazado lista = new RepositorioEnlazado();
+        assertFalse(lista.eliminar(0));
+        assertEquals(0, lista.tamano());
+    }
+
+    @Test
+    public void testEliminarIndiceInvalidoNoCambiaNada() {
+        RepositorioEnlazado lista = new RepositorioEnlazado();
+        for (int i = 0; i < 3; i++) {
+            lista.agregarAlFinal(new LecturaSensor("EST-001", "t"+i, 20+i, 50+i, i));
+        }
+        assertFalse(lista.eliminar(-1));
+        assertFalse(lista.eliminar(3));
+        assertEquals(3, lista.tamano());
+        assertEquals(3, lista.contarRecorriendo());
+    }
+
+    @Test
+    public void testEliminarUnicoNodoDejaListaVacia() {
+        RepositorioEnlazado lista = new RepositorioEnlazado();
+        lista.agregarAlFinal(new LecturaSensor("EST-001", "t0", 20, 50, 0));
+        assertTrue(lista.eliminar(0));
+        assertEquals(0, lista.tamano());
+        assertEquals(0, lista.contarRecorriendo());
+        // si ultimo quedó bien, se puede volver a agregar sin problemas
+        lista.agregarAlFinal(new LecturaSensor("EST-001", "t1", 21, 51, 1));
+        assertEquals(1, lista.tamano());
+        assertEquals(1, lista.contarRecorriendo());
+    }
+
+    @Test
+    public void testConsistenciaDespuesDeEliminar() {
+        RepositorioEnlazado lista = new RepositorioEnlazado();
+        for (int i = 0; i < 5; i++) {
+            lista.agregarAlFinal(new LecturaSensor("EST-001", "t"+i, 20+i, 50+i, i));
+        }
+        lista.eliminar(0);
+        assertEquals(lista.tamano(), lista.contarRecorriendo());
+        lista.eliminar(1);
+        assertEquals(lista.tamano(), lista.contarRecorriendo());
+        lista.eliminar(lista.tamano() - 1);
+        assertEquals(lista.tamano(), lista.contarRecorriendo());
+    }
 }

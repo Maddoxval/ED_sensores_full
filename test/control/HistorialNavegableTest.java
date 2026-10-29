@@ -50,4 +50,42 @@ public class HistorialNavegableTest {
         // no hay más atrás
         assertFalse(historial.anterior());
     }
+    @Test
+    public void testHistorialVacio() {
+        HistorialNavegable historial = new HistorialNavegable();
+        assertEquals(0, historial.tamano());
+        assertEquals(0, historial.recorrerHaciaAdelante());
+        assertEquals(0, historial.recorrerHaciaAtras());
+        assertNull(historial.actual());
+        assertFalse(historial.siguiente());
+        assertFalse(historial.anterior());
+    }
+
+    @Test
+    public void testUnSoloElemento() {
+        HistorialNavegable historial = new HistorialNavegable();
+        LecturaSensor a = new LecturaSensor("EST-001", "t0", 20, 50, 0);
+        historial.agregar(a);
+        assertEquals(1, historial.recorrerHaciaAdelante());
+        assertEquals(1, historial.recorrerHaciaAtras());
+        assertEquals(a, historial.actual());
+        assertFalse(historial.siguiente());
+        assertFalse(historial.anterior());
+    }
+
+    @Test
+    public void testIrAlFinal() {
+        HistorialNavegable historial = new HistorialNavegable();
+        LecturaSensor a = new LecturaSensor("EST-001", "t0", 20, 50, 0);
+        LecturaSensor b = new LecturaSensor("EST-001", "t1", 21, 51, 1);
+        LecturaSensor c = new LecturaSensor("EST-001", "t2", 22, 52, 2);
+        historial.agregar(a);
+        historial.agregar(b);
+        historial.agregar(c);
+        historial.irAlFinal();
+        assertEquals(c, historial.actual());
+        assertFalse(historial.siguiente());
+        assertTrue(historial.anterior());
+        assertEquals(b, historial.actual());
+    }
 }
